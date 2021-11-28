@@ -15,7 +15,7 @@ Disk: 30GB
 
 In this guide we will refer to this host as the DevStack Host, whether or not it is running in a VM. 
 
-## Install DevStack Wallaby
+## Install DevStack Wallaby or Xena
 
 ### Preparation
 
@@ -31,12 +31,25 @@ In this guide we will refer to this host as the DevStack Host, whether or not it
     git clone https://opendev.org/openstack/devstack -b stable/wallaby
 
     cd devstack
+    
+    sudo apt remove python3-simplejson
+    sudo apt remove python3-pyasn1-modules
+    
 ```
 
 - If stack.sh is being re-run, this may be needed:
 
 ```
     sudo apt remove -y openvswitch-common
+    sudo rm /var/run/ovn/openvswitch
+    sudo rm /var/run/ovn/ovn
+```
+- For Xena you may need to [change the OVN directory](https://stackoverflow.com/a/69010263)
+
+```
+Go to neutron_plugin folder, by default the folder is reside in the /opt/stack/devstack/lib directory.
+open ovn_agent file with sudo privileges.
+change line 116 which looks like this OVS_RUNDIR=$OVS_PREFIX/var/run/openvswitch you just have to change ovn by replacing of openvswitch. after change your line will become OVS_RUNDIR=$OVS_PREFIX/var/run/ovn now save the file.
 ```
 
 ### Installer Configuration
@@ -57,6 +70,20 @@ enable_service rabbit mysql key
  
 OS_USERNAME=admin
 ADMIN_PASSWORD=asecurepass
+DATABASE_PASSWORD=$ADMIN_PASSWORD
+RABBIT_PASSWORD=$ADMIN_PASSWORD
+SERVICE_PASSWORD=$ADMIN_PASSWORD
+LOGFILE=$DEST/logs/stack.sh.log
+```
+
+```
+[[local|localrc]]
+ 
+enable_plugin barbican https://opendev.org/openstack/barbican stable/xena
+enable_service rabbit mysql key
+ 
+OS_USERNAME=admin
+ADMIN_PASSWORD=hg9sdoivanoscUHgui
 DATABASE_PASSWORD=$ADMIN_PASSWORD
 RABBIT_PASSWORD=$ADMIN_PASSWORD
 SERVICE_PASSWORD=$ADMIN_PASSWORD
