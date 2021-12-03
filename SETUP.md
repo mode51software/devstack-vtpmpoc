@@ -62,6 +62,9 @@ Create the configuration file:
 ```
     vi /opt/stack/devstack/local.conf   
 ```
+
+For Wallaby:
+
 ```
 [[local|localrc]]
  
@@ -76,6 +79,7 @@ SERVICE_PASSWORD=$ADMIN_PASSWORD
 LOGFILE=$DEST/logs/stack.sh.log
 ```
 
+For Xena:
 ```
 [[local|localrc]]
  
@@ -286,7 +290,10 @@ ls -al /dev/tpm0
 ### Configure libvirt to Support a Persistent vTPM
 
 By default the vTPM in libvirt 6 (used by Wallaby) is deleted on shutdown and recreated on startup. 
-In libvirt 7 (used by Xena) the vTPM can be persisted with configuration.
+
+In libvirt 7 (used by Xena) the vTPM can be persisted with configuration. 
+
+Instructions will be made available for Xena but in theory it should just be a conf file setting.
 
 #### Persistent vTPM for DevStack Wallaby
 
